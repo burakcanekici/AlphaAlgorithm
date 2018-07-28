@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 import jxl.read.biff.BiffException;
 
@@ -11,6 +12,9 @@ public class Main {
 		int[] indexArr = new int[]{0,1,2};
 		AlphaAlg aa = new AlphaAlg();
 		aa.StartAlgorithm(indexArr, "C:\\Users\\TOSHIBA\\Desktop\\input.xls");
+		
+		//HashMap<String, Integer> l = new HashMap<String, Integer>();
+		//System.out.println(l.get("l"));
 	}
 
 }

@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -12,12 +14,18 @@ import jxl.read.biff.BiffException;
 
 public class AlphaAlg {
 	public HashMap<String, NodeObj> petriNet;
+	public HashMap<String, Integer> listDirectSuccession;	// > list
+	public ArrayList<String> listCausality;					// -> list
+	public ArrayList<String> listParallel;					// # list
 	private int indexCaseID;
 	private int indexActivity;
 	private int indexTimestamp;
 	
 	AlphaAlg(){
 		petriNet = new HashMap<String, NodeObj>();
+		listDirectSuccession = new HashMap<String, Integer>();
+		listCausality = new ArrayList<String>();
+		listParallel = new ArrayList<String>();
 	}
 	
 	public void StartAlgorithm(int[] arr, String eventLogDoc) throws IOException, BiffException{
@@ -30,11 +38,20 @@ public class AlphaAlg {
 		Sheet s = w.getSheet("Sheet1");
 		int totalRowNum = s.getRows();
 		int totalColumnNum = s.getColumns();
-		for(int row = 0;row<totalRowNum;row++){
-			for(int column = 0;column<totalColumnNum;column++){
-				System.out.println(s.getCell(column,row).getContents() + "\t");
+		for(int row = 1;row<totalRowNum-1;row++){
+			String e1 = s.getCell(this.indexActivity,row).getContents();
+			String e2 = s.getCell(this.indexActivity+1,row).getContents();
+			
+			if(listDirectSuccession.get(e2 + ">" + e1) != null){
+				listParallel.add(e1 + "#" + e2);
+				listParallel.add(e2 + "#" + e1);
+				listCausality.remove(e1 + "->" + e2);
 			}
-			System.out.println();
+			else{
+				if(!listCausality.contains(e1 + "->" + e2))
+					listCausality.add(e1 + "->" + e2);
+				listDirectSuccession.put(e1 + ">" + e2, listDirectSuccession.get(e1 + ">" + e2) == null ? 0 : listDirectSuccession.get(e1 + ">" + e2) + 1);
+			}
 		}
 		
 	}

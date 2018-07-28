@@ -12,9 +12,6 @@ public class Main {
 		int[] indexArr = new int[]{0,1,2};
 		AlphaAlg aa = new AlphaAlg();
 		aa.StartAlgorithm(indexArr, "C:\\Users\\TOSHIBA\\Desktop\\input.xls");
-		
-		//HashMap<String, Integer> l = new HashMap<String, Integer>();
-		//System.out.println(l.get("l"));
 	}
 
 }
